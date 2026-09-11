@@ -129,25 +129,6 @@ const Particles = (() => {
     setTimeout(() => el.remove(), lifetimeMs);
   }
 
-  function floatingHearts(count = 1) {
-    if (reduceMotion) return;
-    for (let i = 0; i < count; i++) {
-      const heart = document.createElement('div');
-      heart.className = 'floaty';
-      heart.textContent = Math.random() > 0.5 ? '❤️' : '💗';
-      const startX = Math.random() * 100;
-      const size = 14 + Math.random() * 18;
-      const duration = 6 + Math.random() * 5;
-      const drift = (Math.random() - 0.5) * 120;
-      heart.style.left = startX + 'vw';
-      heart.style.bottom = '-5vh';
-      heart.style.fontSize = size + 'px';
-      heart.style.setProperty('--drift', drift + 'px');
-      heart.style.animation = `float-up ${duration}s ease-in forwards`;
-      spawn(heart, duration * 1000 + 200);
-    }
-  }
-
   function sparkles(count = 6, originXvw = null, originYvh = null) {
     if (reduceMotion) return;
     for (let i = 0; i < count; i++) {
@@ -183,13 +164,8 @@ const Particles = (() => {
     }
   }
 
-  function startAmbientHearts() {
-    if (reduceMotion) return;
-    floatingHearts(1);
-    setInterval(() => floatingHearts(1), 3500);
-  }
 
-  return { floatingHearts, sparkles, confettiBurst, startAmbientHearts };
+  return { sparkles, confettiBurst, startAmbientHearts };
 })();
 
 // Expose Particles so cake3d.js (a separate ES module scope) can trigger

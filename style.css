@@ -83,11 +83,6 @@ img { max-width: 100%; display: block; }
   animation: fade-in-up 0.4s ease both;
 }
 
-.music-reminder-icon {
-  font-size: 2.2rem;
-  animation: heartbeat 1.8s ease-in-out infinite;
-}
-
 .music-reminder-title {
   font-family: var(--font-display);
   color: var(--white);
@@ -106,25 +101,7 @@ img { max-width: 100%; display: block; }
   width: 100%;
 }
 
-/* -------------------------------------------------- Particle layer --- */
-/* z-index raised to 9999 so confetti / hearts / sparkles always render
-   on top of every other layer in the page, including modals. */
-#particle-layer {
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 9999;
-  overflow: hidden;
-}
 
-.floaty { position: absolute; will-change: transform, opacity; user-select: none; }
-
-@keyframes float-up {
-  0%   { transform: translateY(0) translateX(0) rotate(0deg); opacity: 0; }
-  10%  { opacity: 1; }
-  90%  { opacity: 1; }
-  100% { transform: translateY(-110vh) translateX(var(--drift, 20px)) rotate(20deg); opacity: 0; }
-}
 
 @keyframes sparkle-pop {
   0%   { transform: scale(0) rotate(0deg); opacity: 0; }
@@ -676,15 +653,6 @@ img { max-width: 100%; display: block; }
   background:
     radial-gradient(circle at 50% 30%, rgba(229, 9, 20, 0.4), transparent 60%),
     linear-gradient(200deg, #000000 0%, #1a0306 60%, var(--black) 100%);
-}
-
-.final-heart {
-  position: relative;
-  z-index: 2;
-  font-size: 4.2rem;
-  animation: heartbeat 2.2s ease-in-out infinite;
-  margin-bottom: 18px;
-  filter: drop-shadow(0 0 30px rgba(229, 9, 20, 0.7));
 }
 
 .final-title {
