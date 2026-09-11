@@ -1711,7 +1711,7 @@ const CakeSection = (() => {
     if (chosenCakeNameEl) {
 
       chosenCakeNameEl.textContent =
-        cake.name + ' 🎂';
+        cake.name;
 
     }
 
