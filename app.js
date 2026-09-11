@@ -2390,7 +2390,6 @@ if (letterContinueBtn) {
 }
 
 Particles.sparkles(14, 50, 45);
-Particles.floatingHearts(6);
 Particles.confettiBurst(80);
 
   } catch (error) {
@@ -2690,7 +2689,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const openSurpriseBtn = document.getElementById('open-surprise');
     openSurpriseBtn.addEventListener('click', () => {
       Particles.sparkles(14, 50, 50);
-      Particles.floatingHearts(10);
       StepFlow.next();
     });
   });
