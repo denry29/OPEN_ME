@@ -1481,3 +1481,265 @@ img { max-width: 100%; display: block; }
 }
 
 .modal-actions .btn { flex: 1; min-width: 130px; }
+
+/* ============================================================
+   DAHAN DAHAN MUSIC DISPLAY
+   ============================================================ */
+
+.music-display {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-top: 32px;
+
+  position: relative;
+
+  height: 100px;
+
+  animation: musicDisplayFadeIn 1.2s ease both;
+}
+
+
+/* ------------------------------------------------------------
+   VINYL RECORD
+   ------------------------------------------------------------ */
+
+.music-vinyl {
+  width: 92px;
+  height: 92px;
+
+  flex-shrink: 0;
+
+  border-radius: 50%;
+
+  position: relative;
+
+  background:
+    repeating-radial-gradient(
+      circle,
+      #111 0px,
+      #111 2px,
+      #1d1d1d 3px,
+      #111 5px
+    );
+
+  box-shadow:
+    0 8px 22px rgba(0, 0, 0, 0.25);
+
+  animation: vinylSpin 4s linear infinite;
+
+  z-index: 1;
+}
+
+
+/* subtle record shine */
+
+.music-vinyl::before {
+  content: "";
+
+  position: absolute;
+
+  inset: 0;
+
+  border-radius: 50%;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255,255,255,0.16),
+      transparent 35%,
+      transparent 70%,
+      rgba(255,255,255,0.05)
+    );
+
+  pointer-events: none;
+}
+
+
+/* center label */
+
+.vinyl-center {
+  position: absolute;
+
+  width: 28px;
+  height: 28px;
+
+  top: 50%;
+  left: 50%;
+
+  transform: translate(-50%, -50%);
+
+  border-radius: 50%;
+
+  background: #b88989;
+
+  box-shadow:
+    inset 0 0 0 4px rgba(255,255,255,0.08);
+}
+
+
+/* center hole */
+
+.vinyl-center::after {
+  content: "";
+
+  position: absolute;
+
+  width: 5px;
+  height: 5px;
+
+  top: 50%;
+  left: 50%;
+
+  transform: translate(-50%, -50%);
+
+  border-radius: 50%;
+
+  background: #f5eeee;
+}
+
+
+/* ------------------------------------------------------------
+   ALBUM COVER
+   ------------------------------------------------------------ */
+
+.music-album-cover {
+  width: 82px;
+  height: 82px;
+
+  object-fit: cover;
+
+  border-radius: 6px;
+
+  margin-left: -28px;
+
+  position: relative;
+
+  z-index: 2;
+
+  box-shadow:
+    0 8px 22px rgba(0, 0, 0, 0.28);
+
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+
+/* ------------------------------------------------------------
+   SONG INFORMATION
+   ------------------------------------------------------------ */
+
+.music-details {
+  display: flex;
+
+  flex-direction: column;
+
+  margin-left: 14px;
+
+  text-align: left;
+
+  min-width: 120px;
+}
+
+
+.music-label {
+  font-family: "Poppins", sans-serif;
+
+  font-size: 9px;
+
+  font-weight: 500;
+
+  letter-spacing: 0.18em;
+
+  text-transform: uppercase;
+
+  opacity: 0.55;
+
+  margin-bottom: 3px;
+}
+
+
+.music-title {
+  font-family: "Playfair Display", serif;
+
+  font-size: 17px;
+
+  font-weight: 600;
+
+  font-style: italic;
+
+  line-height: 1.2;
+}
+
+
+/* ------------------------------------------------------------
+   ANIMATIONS
+   ------------------------------------------------------------ */
+
+@keyframes vinylSpin {
+
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+
+}
+
+
+@keyframes musicDisplayFadeIn {
+
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+}
+
+
+/* ------------------------------------------------------------
+   MOBILE
+   ------------------------------------------------------------ */
+
+@media (max-width: 480px) {
+
+  .music-display {
+    margin-top: 26px;
+
+    height: 86px;
+  }
+
+  .music-vinyl {
+    width: 78px;
+    height: 78px;
+  }
+
+  .music-album-cover {
+    width: 70px;
+    height: 70px;
+
+    margin-left: -23px;
+  }
+
+  .music-details {
+    margin-left: 11px;
+  }
+
+  .music-title {
+    font-size: 15px;
+  }
+
+  .music-label {
+    font-size: 8px;
+  }
+
+}
