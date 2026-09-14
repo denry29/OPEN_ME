@@ -6,6 +6,133 @@
    StepFlow.back() in app.js — there is no scrolling between sections.
    ===================================================================== */
 
+/* ============================================================
+   HANGING BIRTHDAY BALLOON — WELCOME PAGE
+   ============================================================ */
+
+/* ============================================================
+   HANGING BALLOON — TOP LEFT CORNER
+   ============================================================ */
+
+.hanging-balloon {
+  position: absolute;
+
+  /* Position in the top-left corner */
+  top: 45px;
+  left: -35px;
+
+  /* Size */
+  width: 430px;
+  height: auto;
+
+  /* Tilt diagonally */
+  transform: rotate(-20deg);
+
+  /* Keep it above the background */
+  z-index: 1;
+
+  /* Prevent clicking the decoration */
+  pointer-events: none;
+
+
+  /* Slight realistic shadow */
+  filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.35));
+}
+
+
+@keyframes balloon-sway {
+  0%, 100% {
+    transform: translateX(-50%) rotate(-8deg);
+  }
+
+  50% {
+    transform: translateX(-50%) rotate(-4deg);
+  }
+}
+
+/* ============================================================
+   DECORATIVE STARS — WELCOME PAGE
+   ============================================================ */
+
+.decor-star {
+  position: absolute;
+
+  width: 55px;
+  height: auto;
+
+  z-index: 1;
+  pointer-events: none;
+
+  filter: drop-shadow(0 5px 10px rgba(255, 255, 255, 0.35));
+}
+
+
+/* =========================
+   STAR 1 — TOP LEFT
+   ========================= */
+
+.star-1 {
+  top: 60px;
+  left: 350px;
+
+  transform: rotate(-12deg);
+}
+
+
+/* =========================
+   STAR 2 — TOP RIGHT
+   ========================= */
+
+.star-2 {
+  top: 120px;
+  right: 100px;
+
+  transform: rotate(15deg);
+}
+
+
+/* =========================
+   STAR 3 — TOP CENTER/RIGHT
+   ========================= */
+
+.star-3 {
+  top: 210px;
+  right: 450px;
+
+  transform: rotate(-8deg);
+}
+
+/* STAR 4 — TOP / LEFT-CENTER */
+.star-4 {
+  top: 300px;
+  left: 500px;
+  transform: rotate(18deg);
+}
+
+
+/* STAR 5 — MIDDLE RIGHT */
+.star-5 {
+  top: 500px;
+  right: 450px;
+  transform: rotate(-15deg);
+}
+
+
+/* STAR 6 — LOWER LEFT */
+.star-6 {
+  top: 520px;
+  left: 100px;
+  transform: rotate(10deg);
+}
+
+
+/* STAR 7 — LOWER RIGHT */
+.star-7 {
+  top: 640px;
+  right: 750px;
+  transform: rotate(-20deg);
+}
+
 :root {
   --red: #E50914;
   --red-dark: #A00018;
@@ -49,6 +176,30 @@ img { max-width: 100%; display: block; }
     animation-duration: 4s !important;
     animation-iteration-count: infinite !important;
   }
+}
+
+/* ============================================================
+   SNOOPY ABOVE MUSIC REMINDER
+   ============================================================ */
+
+.reminder-snoopy {
+  position: absolute;
+
+  /* Position above the reminder card */
+  top: -96px;
+  left: 50%;
+
+  /* Size */
+  width: 190px;
+  height: auto;
+
+  /* Center horizontally */
+  transform: translateX(-50%);
+
+  /* Put Snoopy above everything */
+  z-index: 10;
+
+  pointer-events: none;
 }
 
 /* -------------------------------------------------- Music reminder --- */
@@ -152,11 +303,7 @@ img { max-width: 100%; display: block; }
 }
 
 /* --------------------------------------------------- Step / section -- */
-#app-steps {
-  position: relative;
-  width: 100vw;
-  height: 100vh;
-}
+
 
 .step {
   display: none; /* hidden unless .active-step */
@@ -814,6 +961,64 @@ img { max-width: 100%; display: block; }
   }
 }
 
+
+/* =========================================================
+   CELEBRANT LETTER — SCROLLABLE
+   ========================================================= */
+
+#celebrant-letter {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* The actual letter */
+#celebrant-letter .letter-paper {
+  width: min(540px, 90vw);
+  max-height: 55vh;
+
+  padding: 35px 30px;
+
+  box-sizing: border-box;
+
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+
+  border-radius: 20px;
+
+  background: #fff7f7;
+
+  box-shadow:
+    0 15px 40px rgba(0, 0, 0, 0.35),
+    0 0 25px rgba(229, 9, 20, 0.08);
+
+  scrollbar-width: thin;
+  scrollbar-color: #e50914 transparent;
+}
+
+/* Chrome / Edge scrollbar */
+#celebrant-letter .letter-paper::-webkit-scrollbar {
+  width: 7px;
+}
+
+#celebrant-letter .letter-paper::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+#celebrant-letter .letter-paper::-webkit-scrollbar-thumb {
+  background: #e50914;
+  border-radius: 20px;
+}
+
+#celebrant-letter .letter-paper::-webkit-scrollbar-thumb:hover {
+  background: #a00018;
+}
+
 /* ============================================================ */
 /* CAKE SELECTION (2D grid — this styling stays untouched)        */
 /* ============================================================ */
@@ -1314,4 +1519,7 @@ img { max-width: 100%; display: block; }
     font-size: 7px;
   }
 }
+
+
+
 
