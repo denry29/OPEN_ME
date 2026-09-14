@@ -241,7 +241,7 @@ img { max-width: 100%; display: block; }
 
 .btn-large { padding: 18px 42px; font-size: 1.1rem; }
 .btn:focus-visible { outline: 2px solid var(--pink); outline-offset: 3px; }
-.continue-btn { margin-top: 40px; }
+.continue-btn { margin-top: 5px; }
 
 /* ============================================================ */
 /* WELCOME                                                        */
@@ -295,80 +295,239 @@ img { max-width: 100%; display: block; }
 /* ============================================================ */
 /* PHOTO MEMORIES — polaroid slider                               */
 /* ============================================================ */
-.memories-section { background: linear-gradient(180deg, #000000 0%, #150406 100%); }
+/* =========================================================
+   MOVIE FILM STRIP MEMORIES
+   ========================================================= */
 
-.photo-gallery {
+.film-gallery {
   width: 100%;
-  max-width: 750px;
-  margin: 10px auto 20px;
-  padding: 10px;
+  max-width: 1000px;
+  margin: 35px auto 25px;
+
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 20px;
+  gap: 18px;
 }
 
-.photo-gallery-display {
-  width: 320px;
-  min-height: 400px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+.film-window {
+  width: min(820px, 80vw);
+  height: 330px;
 
-.polaroid {
-  width: 300px;
-  background: #ffffff;
-  padding: 14px 14px 50px;
-  border-radius: 6px;
-  position: relative;
-  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.55), 0 0 25px rgba(229, 9, 20, 0.2);
-  transform: rotate(-3deg);
-  animation: polaroidAppear 0.45s ease;
-}
-
-@keyframes polaroidAppear {
-  0%   { opacity: 0; transform: rotate(-8deg) scale(0.9); }
-  100% { opacity: 1; transform: rotate(-3deg) scale(1); }
-}
-
-.polaroid-photo-wrap {
-  width: 100%;
-  height: 270px;
   overflow: hidden;
-  border-radius: 4px;
-  background: linear-gradient(135deg, #ffe1e6, #ffd0d8);
+  position: relative;
+
+  background: #080808;
+  border-top: 18px solid #111;
+  border-bottom: 18px solid #111;
+
+  box-shadow:
+    0 20px 50px rgba(0,0,0,.55),
+    0 0 30px rgba(229,9,20,.18);
 }
 
-.polaroid-photo-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
+/* The actual strip */
 
-.polaroid-caption {
-  position: absolute;
-  left: 0; right: 0; bottom: 12px;
-  margin: 0;
-  text-align: center;
-  font-family: var(--font-script);
-  font-size: 1.4rem;
-  color: var(--red-dark);
-}
-
-.gallery-arrow {
-  width: 50px;
-  height: 50px;
-  flex-shrink: 0;
-  border-radius: 50%;
-  background: linear-gradient(135deg, var(--red), var(--red-dark));
-  color: white;
-  font-size: 26px;
+.film-strip {
   display: flex;
   align-items: center;
-  justify-content: center;
-  box-shadow: 0 8px 25px rgba(229, 9, 20, 0.45);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  height: 100%;
+
+  width: max-content;
+
+  animation: filmMove 22s linear infinite;
+
+  will-change: transform;
 }
 
-.gallery-arrow:hover { transform: scale(1.1); box-shadow: 0 12px 35px rgba(229, 9, 20, 0.65); }
-.gallery-arrow:active { transform: scale(0.95); }
+/* Pause while hovering */
+
+.film-window:hover .film-strip {
+  animation-play-state: paused;
+}
+
+/* Individual film frame */
+
+.film-frame {
+  position: relative;
+
+  width: 250px;
+  height: 280px;
+
+  flex-shrink: 0;
+
+  margin: 0 10px;
+
+  padding: 28px 12px;
+
+  background: #171717;
+
+  box-sizing: border-box;
+}
+
+/* Photo */
+
+.film-frame img {
+  width: 100%;
+  height: 224px;
+
+  object-fit: cover;
+
+  display: block;
+
+  border: 3px solid #050505;
+
+  box-shadow:
+    0 4px 12px rgba(0,0,0,.6);
+
+  transition:
+    transform .35s ease,
+    filter .35s ease;
+}
+
+/* Slight zoom when hovering */
+
+.film-frame:hover img {
+  transform: scale(1.04);
+  filter: brightness(1.08);
+}
+
+/* =========================================================
+   FILM HOLES
+   ========================================================= */
+
+.film-sprocket {
+  position: absolute;
+
+  left: 10px;
+  right: 10px;
+
+  height: 13px;
+
+  background:
+    repeating-linear-gradient(
+      90deg,
+      transparent 0px,
+      transparent 8px,
+      #050505 8px,
+      #050505 20px,
+      transparent 20px,
+      transparent 28px
+    );
+}
+
+.film-sprocket.top {
+  top: 6px;
+}
+
+.film-sprocket.bottom {
+  bottom: 6px;
+}
+
+/* =========================================================
+   MOVEMENT
+   ========================================================= */
+
+@keyframes filmMove {
+
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-1560px);
+  }
+
+}
+
+/* =========================================================
+   NAVIGATION BUTTONS
+   ========================================================= */
+
+.film-arrow {
+  flex-shrink: 0;
+
+  width: 48px;
+  height: 48px;
+
+  border-radius: 50%;
+
+  background: rgba(0,0,0,.75);
+
+  border: 1px solid rgba(255,255,255,.2);
+
+  color: white;
+
+  font-size: 24px;
+
+  cursor: pointer;
+
+  transition:
+    transform .2s ease,
+    background .2s ease;
+}
+
+.film-arrow:hover {
+  transform: scale(1.1);
+
+  background: #e50914;
+}
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+  .film-gallery {
+    gap: 6px;
+    margin-top: 25px;
+  }
+
+  .film-window {
+    width: 82vw;
+    height: 245px;
+
+    border-top-width: 14px;
+    border-bottom-width: 14px;
+  }
+
+  .film-frame {
+    width: 175px;
+    height: 205px;
+
+    margin: 0 7px;
+
+    padding: 21px 8px;
+  }
+
+  .film-frame img {
+    height: 163px;
+  }
+
+  .film-sprocket {
+    left: 7px;
+    right: 7px;
+    height: 9px;
+  }
+
+  .film-sprocket.top {
+    top: 5px;
+  }
+
+  .film-sprocket.bottom {
+    bottom: 5px;
+  }
+
+  .film-arrow {
+    width: 38px;
+    height: 38px;
+
+    font-size: 18px;
+  }
+
+}
 
 /* ============================================================ */
 /* LETTER                                                         */
@@ -521,6 +680,139 @@ img { max-width: 100%; display: block; }
 }
 
 .letter-privacy-note { color: var(--pink); font-size: 0.88rem; margin-top: 16px; }
+
+
+.snoopy-letter {
+  width: 150px;
+  height: auto;
+  display: block;
+  margin: 15px auto 5px;
+  pointer-events: none;
+  transform: rotate(4deg);
+}
+
+/* ============================================================
+   CUTE PIN ENTRY
+   ============================================================ */
+
+#pin-entry {
+  text-align: center;
+  position: relative;
+  padding: 25px 20px;
+}
+
+
+#pin-entry .letter-headline {
+  margin-bottom: 8px;
+}
+
+#pin-entry .letter-sub {
+  margin-bottom: 20px;
+}
+
+/* PIN box */
+.letter-pin-input {
+  width: 220px;
+  height: 58px;
+  display: block;
+  margin: 0 auto 16px;
+
+  border: 2px solid rgba(229, 9, 20, 0.35);
+  border-radius: 18px;
+
+  background: rgba(255, 255, 255, 0.95);
+
+  color: #a00018;
+
+  font-family: "Poppins", sans-serif;
+  font-size: 25px;
+  font-weight: 600;
+  letter-spacing: 0.35em;
+  text-align: center;
+
+  outline: none;
+
+  box-shadow:
+    0 8px 25px rgba(0, 0, 0, 0.18),
+    0 0 0 5px rgba(229, 9, 20, 0.06);
+
+  transition:
+    border-color 0.25s ease,
+    box-shadow 0.25s ease,
+    transform 0.2s ease;
+}
+
+/* Placeholder */
+.letter-pin-input::placeholder {
+  color: #c9a5a5;
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 0.05em;
+}
+
+/* When user clicks the PIN box */
+.letter-pin-input:focus {
+  border-color: #e50914;
+
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.2),
+    0 0 0 6px rgba(229, 9, 20, 0.10);
+
+  transform: scale(1.03);
+}
+
+/* Open Letter button */
+#open-letter-btn {
+  border-radius: 999px;
+  padding: 11px 28px;
+
+  box-shadow:
+    0 8px 20px rgba(229, 9, 20, 0.25);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+#open-letter-btn:hover {
+  transform: translateY(-2px) scale(1.03);
+
+  box-shadow:
+    0 12px 25px rgba(229, 9, 20, 0.35);
+}
+
+/* Tiny floating animation */
+@keyframes pinFloat {
+  0%, 100% {
+    transform: translateY(0) rotate(-3deg);
+  }
+
+  50% {
+    transform: translateY(-6px) rotate(3deg);
+  }
+}
+
+/* Incorrect PIN */
+.pin-error {
+  margin-top: 12px;
+  font-size: 0.85rem;
+  color: #e50914;
+  animation: pinShake 0.35s ease;
+}
+
+@keyframes pinShake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+
+  25% {
+    transform: translateX(-6px);
+  }
+
+  75% {
+    transform: translateX(6px);
+  }
+}
 
 /* ============================================================ */
 /* CAKE SELECTION (2D grid — this styling stays untouched)        */
@@ -768,7 +1060,7 @@ img { max-width: 100%; display: block; }
   position: fixed;
 
   /* Below the music reminder */
-  top: 120px;
+  bottom: 25px;
   right: 24px;
 
   z-index: 99;
@@ -788,8 +1080,8 @@ img { max-width: 100%; display: block; }
    ============================================================ */
 
 .music-vinyl {
-  width: 92px;
-  height: 92px;
+  width: 85px;
+  height: 85px;
 
   flex-shrink: 0;
 
@@ -821,6 +1113,7 @@ img { max-width: 100%; display: block; }
   animation-play-state: paused;
 
   will-change: transform;
+  margin-right: -10px;
 }
 
 
@@ -845,10 +1138,10 @@ img { max-width: 100%; display: block; }
   background:
     linear-gradient(
       135deg,
-      rgba(255, 255, 255, 0.15),
-      transparent 35%,
+      rgba(183, 180, 180, 0.15),
+      transparent 45%,
       transparent 70%,
-      rgba(255, 255, 255, 0.05)
+      rgba(61, 59, 59, 0.05)
     );
 
   pointer-events: none;
@@ -1021,3 +1314,4 @@ img { max-width: 100%; display: block; }
     font-size: 7px;
   }
 }
+
