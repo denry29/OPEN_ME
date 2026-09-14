@@ -159,7 +159,6 @@ const StepFlow = (() => {
 })();
 
 
-
 /* ---------------------------------------------------------------------
    CONFETTI — canvas-confetti library
    --------------------------------------------------------------------- */
@@ -1800,6 +1799,69 @@ const CakeSection = (() => {
 
 
 /* ---------------------------------------------------------------------
+   VINYL MUSIC SYNC
+   Spins the vinyl only while bgMusic is actually playing.
+   Consolidated into a single module (previously duplicated).
+   --------------------------------------------------------------------- */
+
+const MusicVinylSync = (() => {
+  let audio = null;
+  let vinyl = null;
+
+  function start() {
+    if (vinyl) {
+      vinyl.classList.add('is-playing');
+    }
+  }
+
+  function stop() {
+    if (vinyl) {
+      vinyl.classList.remove('is-playing');
+    }
+  }
+
+  function init() {
+    audio = document.getElementById('bgMusic');
+    vinyl = document.querySelector('.music-vinyl');
+
+    if (!audio) {
+      console.error('[Dahan Vinyl] #bgMusic not found.');
+      return;
+    }
+
+    if (!vinyl) {
+      console.error('[Dahan Vinyl] .music-vinyl not found.');
+      return;
+    }
+
+    // Music starts
+    audio.addEventListener('play', start);
+    audio.addEventListener('playing', start);
+
+    // Music pauses
+    audio.addEventListener('pause', stop);
+
+    // Music finishes
+    audio.addEventListener('ended', stop);
+
+    // Correct initial state
+    if (!audio.paused) {
+      start();
+    } else {
+      stop();
+    }
+  }
+
+  return {
+    init,
+    start,
+    stop
+  };
+})();
+
+
+
+/* ---------------------------------------------------------------------
    MUSIC
    --------------------------------------------------------------------- */
 
@@ -1833,6 +1895,11 @@ const Music = (() => {
       );
 
 
+      // Belt-and-suspenders: start the vinyl directly too,
+      // in case the 'play' event fires oddly on some browsers.
+      MusicVinylSync.start();
+
+
     } catch (error) {
 
       console.error(
@@ -1854,6 +1921,9 @@ const Music = (() => {
 
 
     audio.pause();
+
+
+    MusicVinylSync.stop();
 
 
     console.log(
@@ -2032,6 +2102,18 @@ document.addEventListener(
     safe(
       'CakeSection',
       () => CakeSection.init()
+    );
+
+
+    safe(
+      'MusicVinylSync',
+      () => MusicVinylSync.init()
+    );
+
+
+    safe(
+      'Music',
+      () => Music.init()
     );
 
 
