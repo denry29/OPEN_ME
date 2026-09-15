@@ -456,13 +456,12 @@ img { max-width: 100%; display: block; }
 }
 
 .scrapbook-cutout {
-    width: 850px !important;
-    max-width: 900px !important;
-    height: 150vh ;
-    max-height: 800px !important;
-    object-fit: contain !important;
-    display: block !important;
-    margin: 0 auto !important;
+    width: 100%;
+    max-width: 220px;
+    height: min(50vh, 400px);
+    object-fit: contain;
+    display: block;
+    margin: 0 auto;
 
     -webkit-mask-image: linear-gradient(
         to bottom,
@@ -475,6 +474,42 @@ img { max-width: 100%; display: block; }
         #000 70%,
         transparent 97%
     );
+}
+
+
+/* =========================================================
+   PHONE VERSION
+   Makes the cutout MUCH BIGGER ONLY ON MOBILE
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+    .scrapbook-cutout {
+        width: 100%;
+        max-width: none;
+
+        /* About 3x the previous visual size */
+        height: 75vh;
+
+        object-fit: contain;
+
+        margin: 0 auto;
+
+        -webkit-mask-image: linear-gradient(
+            to bottom,
+            #000 65%,
+            #000 75%,
+            transparent 98%
+        );
+
+        mask-image: linear-gradient(
+            to bottom,
+            #000 65%,
+            #000 75%,
+            transparent 98%
+        );
+    }
+
 }
 /* ---- Scroll hint — only relevant on phones, where the panels
        are full-screen and stacked; hidden by default here ---- */
@@ -544,6 +579,84 @@ img { max-width: 100%; display: block; }
   font-size: 0.82rem;
   line-height: 1.5;
   color: var(--pink);
+}
+
+
+/* =========================================================
+   MOBILE BLACK PANEL
+   Full-screen black with fading edges
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+    /* The panel itself */
+    #welcome {
+        position: relative;
+
+        width: 100vw;
+        min-width: 100vw;
+
+        height: 100vh;
+        min-height: 100vh;
+
+        margin: 0;
+        padding: 0;
+
+        background: #0c0708;
+
+        overflow: hidden;
+    }
+
+
+    /* Fading black edges / corners */
+    #welcome::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+
+        pointer-events: none;
+
+        background:
+            radial-gradient(
+                ellipse at top left,
+                transparent 0%,
+                rgba(12, 7, 8, 0.35) 35%,
+                rgba(12, 7, 8, 0.85) 70%,
+                #0c0708 100%
+            );
+
+        z-index: 0;
+    }
+
+
+    /* Top fading effect */
+    #welcome::after {
+        content: "";
+        position: absolute;
+
+        top: 0;
+        left: 0;
+
+        width: 100%;
+        height: 180px;
+
+        pointer-events: none;
+
+        background: linear-gradient(
+            to bottom,
+            rgba(12, 7, 8, 0.15),
+            rgba(12, 7, 8, 0)
+        );
+
+        z-index: 0;
+    }
+
+
+    /* Keep text and button above the fading layer */
+    #welcome > * {
+        position: relative;
+        z-index: 2;
+    }
 }
 
 /* ---- CTA button, sits under the message inside panel 2 ---- */
