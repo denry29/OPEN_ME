@@ -74,56 +74,91 @@
 </div>
 
 <!-- Sparkles / confetti render into this layer -->
-
-<!-- Tiny progress dots — purely visual, not clickable, shows where you are -->
-<div id="step-dots" class="step-dots" aria-hidden="true"></div>
+<div id="particle-layer" aria-hidden="true"></div>
 
 <main id="app-steps">
 
   <!-- ============================================================ -->
-  <!-- STEP 1: WELCOME -->
+  <!-- STEP 1: WELCOME — two swipeable/scrollable panels -->
+  <!-- Panel 1: cutout photo (left) + heading/balloon/calendar        -->
+  <!-- Panel 2: caption message + Open Your Surprise button           -->
+  <!-- On phones, panel 1 shows first and panel 2 reveals by          -->
+  <!-- scrolling down inside the section (CSS scroll-snap below).     -->
   <!-- ============================================================ -->
- <!-- ============================================================ -->
-<!-- STEP 1: WELCOME -->
-<!-- ============================================================ -->
 
-<section class="step section welcome-section" data-step="welcome">
+  <section class="step section welcome-section" data-step="welcome">
 
-  <div class="bg-gradient"></div>
+    <div class="scrapbook-bg"></div>
+    <div class="scrapbook-pattern"></div>
 
-  
+    <div class="welcome-panels">
 
-  <img
-    src="images/balloon.png"
-    class="hanging-balloon"
-    alt="Happy 18th Birthday balloons"
-  >
+      <!-- PANEL 1: photo left, decorative bits right -->
+      <div class="welcome-panel welcome-panel-1">
 
-  <img src="images/star.png" class="decor-star star-1" alt="">
-  <img src="images/star.png" class="decor-star star-2" alt="">
-  <img src="images/star.png" class="decor-star star-3" alt="">
-  <img src="images/star.png" class="decor-star star-4" alt="">
-  <img src="images/star.png" class="decor-star star-5" alt="">
-  <img src="images/star.png" class="decor-star star-6" alt="">
-  <img src="images/star.png" class="decor-star star-7" alt="">
+        <div class="panel1-photo">
+          <img
+            src="images/dhanna8.png"
+            class="scrapbook-cutout"
+            alt="A photo of Dhanna"
+          >
+        </div>
 
-  <div class="welcome-content">
+        <div class="panel1-deco">
+          <h1 class="scrapbook-script">Happy<br>Birthday</h1>
 
-    <p class="welcome-sub">
-      A little surprise made just for you&hellip;
-    </p>
+          <div class="balloon-18" role="img" aria-label="Number 18 birthday balloon">
+            
+          </div>
 
-    <button
-      id="open-surprise"
-      class="btn btn-primary btn-large"
-      type="button"
-    >
-      Open Your Surprise
-    </button>
+          <div class="scrapbook-calendar" role="img" aria-label="September calendar with the 29th circled">
+            <div class="calendar-spiral" aria-hidden="true">
+              <span></span><span></span><span></span><span></span><span></span>
+            </div>
 
-  </div>
+            <div class="calendar-month">September</div>
 
-</section>
+
+            <div class="calendar-days" aria-hidden="true">
+
+              <span class="cal-cell cal-29">29</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="scroll-hint" aria-hidden="true">
+          <span class="scroll-hint-text">Scroll</span>
+          <span class="scroll-hint-arrow">&darr;</span>
+        </div>
+
+      </div>
+
+      <!-- PANEL 2: message + Open Your Surprise button -->
+      <div class="welcome-panel welcome-panel-2">
+
+        <div class="scrapbook-caption">
+          <p class="caption-headline">Happy birthday, Kirsten</p>
+          <p class="caption-message">
+            Today is not just your birthday. It's a quiet celebration of
+            every small moment you've brightened, every heart you've held
+            without even knowing, every day you've made softer just by
+            being here.
+          </p>
+        </div>
+
+        <button
+          id="open-surprise"
+          class="btn btn-primary btn-large open-surprise-btn"
+          type="button"
+        >
+          Open Your Surprise
+        </button>
+
+      </div>
+
+    </div>
+
+  </section>
 
   <!-- ============================================================ -->
   <!-- STEP 2: PHOTO MEMORIES -->
@@ -149,9 +184,7 @@
 
       <div class="photo-gallery film-gallery">
 
-  <button id="prev-photo" class="gallery-arrow film-arrow" type="button">
-    &#10094;
-  </button>
+
 
   <div class="film-window">
     <div id="film-strip" class="film-strip">
@@ -195,9 +228,6 @@
     </div>
   </div>
 
-  <button id="next-photo" class="gallery-arrow film-arrow" type="button">
-    &#10095;
-  </button>
 
 </div>
 
@@ -590,7 +620,7 @@
 <script src="cakes-data.js"></script>
 <script src="app.js"></script>
 <script type="module" src="cake3d.js"></script>
+<script src="music-drag.js"></script>
 
 </body>
 </html>
-

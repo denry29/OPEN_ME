@@ -5,6 +5,8 @@
 
 /* ---------------------------------------------------------------------
    STEP FLOW
+   (the circular progress dots have been removed — steps are now
+   tracked purely internally, with no dot indicator in the UI)
    --------------------------------------------------------------------- */
 
 const StepFlow = (() => {
@@ -29,19 +31,6 @@ const StepFlow = (() => {
     );
   });
 
-  const dotsWrap = document.getElementById('step-dots');
-
-  const dotEls = ORDER.map(() => {
-    const dot = document.createElement('div');
-    dot.className = 'step-dot';
-
-    if (dotsWrap) {
-      dotsWrap.appendChild(dot);
-    }
-
-    return dot;
-  });
-
 
   function show(index) {
 
@@ -50,13 +39,6 @@ const StepFlow = (() => {
       if (stepEls[name]) {
         stepEls[name].classList.toggle(
           'active-step',
-          i === index
-        );
-      }
-
-      if (dotEls[i]) {
-        dotEls[i].classList.toggle(
-          'active',
           i === index
         );
       }
@@ -1227,7 +1209,7 @@ const Letter = (() => {
 
       Particles.sparkles(
         14,
-        50,
+        45,
         45
       );
 
@@ -1325,169 +1307,6 @@ const Letter = (() => {
   return {
     init,
     bindEvents
-  };
-
-})();
-
-
-
-/* ---------------------------------------------------------------------
-   PHOTO SLIDER
-   --------------------------------------------------------------------- */
-
-const PhotoSlider = (() => {
-
-  const photos = [
-
-    {
-      src: 'images/dhanna1.jpg',
-      caption: ''
-    },
-
-    {
-      src: 'images/dhanna2.jpg',
-      caption: ''
-    },
-
-    {
-      src: 'images/dhanna3.jpg',
-      caption: ''
-    },
-
-    {
-      src: 'images/dhanna4.jpg',
-      caption: ''
-    },
-
-    {
-      src: 'images/dhanna5.jpg',
-      caption: ''
-    },
-
-    {
-      src: 'images/dhanna6.jpg',
-      caption: ''
-    }
-
-  ];
-
-
-  let index = 0;
-
-
-  const image =
-    document.getElementById(
-      'memory-image'
-    );
-
-
-  const caption =
-    document.getElementById(
-      'memory-caption'
-    );
-
-
-  const prevBtn =
-    document.getElementById(
-      'prev-photo'
-    );
-
-
-  const nextBtn =
-    document.getElementById(
-      'next-photo'
-    );
-
-
-
-  function show(i) {
-
-    index =
-      (i + photos.length) %
-      photos.length;
-
-
-    if (image) {
-
-      image.src =
-        photos[index].src;
-
-
-      image.alt =
-        'A memory of Kirsten, photo ' +
-        (index + 1);
-
-    }
-
-
-    if (caption) {
-
-      caption.textContent =
-        photos[index].caption || '';
-
-    }
-
-
-    const polaroid =
-      document.querySelector(
-        '.polaroid'
-      );
-
-
-    if (polaroid) {
-
-      polaroid.style.animation =
-        'none';
-
-
-      void polaroid.offsetWidth;
-
-
-      polaroid.style.animation =
-        'polaroidAppear 0.45s ease';
-
-    }
-
-  }
-
-
-
-  function bindEvents() {
-
-    if (prevBtn) {
-
-      prevBtn.addEventListener(
-        'click',
-        () => show(index - 1)
-      );
-
-    }
-
-
-    if (nextBtn) {
-
-      nextBtn.addEventListener(
-        'click',
-        () => show(index + 1)
-      );
-
-    }
-
-  }
-
-
-
-  function init() {
-
-    bindEvents();
-
-    show(0);
-
-  }
-
-
-  return {
-    init
   };
 
 })();
@@ -1860,6 +1679,11 @@ const MusicVinylSync = (() => {
 })();
 
 
+/* Make it available globally (e.g. to the Okay button handler below,
+   which starts the vinyl the instant it's clicked). */
+window.MusicVinylSync = MusicVinylSync;
+
+
 
 /* ---------------------------------------------------------------------
    MUSIC
@@ -2037,6 +1861,12 @@ function initMusicReminder() {
         true;
 
 
+      // Spin the vinyl the instant the button is clicked —
+      // don't wait on audio.play()'s promise or its events,
+      // which can lag while the mp3 loads.
+      MusicVinylSync.start();
+
+
       Music.play();
 
 
@@ -2078,12 +1908,6 @@ document.addEventListener(
     safe(
       'StepFlow',
       () => StepFlow.init()
-    );
-
-
-    safe(
-      'PhotoSlider',
-      () => PhotoSlider.init()
     );
 
 
@@ -2160,3 +1984,110 @@ document.addEventListener(
 
   }
 );
+
+/* =====================================================================
+   MUSIC WIDGET — DRAG TO REPOSITION
+   ---------------------------------------------------------------------
+   Makes the floating "Now Playing" sticker (.music-display) movable
+   anywhere on screen, on both touch (phones) and mouse (desktop).
+   Uses Pointer Events so one code path handles both input types.
+
+   It does NOT touch playback logic — app.js still owns starting/
+   stopping the audio and toggling the .is-playing class on the vinyl.
+   This file only repositions the widget's container.
+   ===================================================================== */
+
+(function () {
+  "use strict";
+
+  function initMusicDrag() {
+    var widget = document.querySelector(".music-display");
+    if (!widget) return;
+
+    var dragging = false;
+    var pointerId = null;
+    var offsetX = 0;
+    var offsetY = 0;
+    var moved = false;
+
+    function clamp(value, min, max) {
+      return Math.min(Math.max(value, min), max);
+    }
+
+    // Keep the widget fully inside the viewport, with a small margin
+    function place(x, y) {
+      var rect = widget.getBoundingClientRect();
+      var margin = 8;
+      var maxX = window.innerWidth - rect.width - margin;
+      var maxY = window.innerHeight - rect.height - margin;
+
+      var clampedX = clamp(x, margin, Math.max(maxX, margin));
+      var clampedY = clamp(y, margin, Math.max(maxY, margin));
+
+      widget.style.left = clampedX + "px";
+      widget.style.top = clampedY + "px";
+      widget.style.right = "auto";
+      widget.style.bottom = "auto";
+    }
+
+    function onPointerDown(e) {
+      // Only the primary button/touch starts a drag
+      if (e.button !== undefined && e.button !== 0) return;
+
+      dragging = true;
+      moved = false;
+      pointerId = e.pointerId;
+
+      var rect = widget.getBoundingClientRect();
+      offsetX = e.clientX - rect.left;
+      offsetY = e.clientY - rect.top;
+
+      widget.classList.add("is-dragging");
+
+      try {
+        widget.setPointerCapture(pointerId);
+      } catch (err) {
+        /* ignore — not fatal if capture isn't supported */
+      }
+    }
+
+    function onPointerMove(e) {
+      if (!dragging || e.pointerId !== pointerId) return;
+      moved = true;
+      place(e.clientX - offsetX, e.clientY - offsetY);
+    }
+
+    function onPointerUp(e) {
+      if (!dragging || e.pointerId !== pointerId) return;
+      dragging = false;
+      pointerId = null;
+      widget.classList.remove("is-dragging");
+
+      try {
+        widget.releasePointerCapture(e.pointerId);
+      } catch (err) {
+        /* ignore */
+      }
+    }
+
+    widget.addEventListener("pointerdown", onPointerDown);
+    widget.addEventListener("pointermove", onPointerMove);
+    widget.addEventListener("pointerup", onPointerUp);
+    widget.addEventListener("pointercancel", onPointerUp);
+
+    // If the widget was mid-drag or already repositioned and the
+    // window/orientation changes size, keep it on-screen.
+    window.addEventListener("resize", function () {
+      var rect = widget.getBoundingClientRect();
+      if (widget.style.left || widget.style.top) {
+        place(rect.left, rect.top);
+      }
+    });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initMusicDrag);
+  } else {
+    initMusicDrag();
+  }
+})();

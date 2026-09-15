@@ -6,135 +6,13 @@
    StepFlow.back() in app.js — there is no scrolling between sections.
    ===================================================================== */
 
-/* ============================================================
-   HANGING BIRTHDAY BALLOON — WELCOME PAGE
-   ============================================================ */
-
-/* ============================================================
-   HANGING BALLOON — TOP LEFT CORNER
-   ============================================================ */
-
-.hanging-balloon {
-  position: absolute;
-
-  /* Position in the top-left corner */
-  top: 45px;
-  left: -35px;
-
-  /* Size */
-  width: 430px;
-  height: auto;
-
-  /* Tilt diagonally */
-  transform: rotate(-20deg);
-
-  /* Keep it above the background */
-  z-index: 1;
-
-  /* Prevent clicking the decoration */
-  pointer-events: none;
-
-
-  /* Slight realistic shadow */
-  filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.35));
-}
-
-
-@keyframes balloon-sway {
-  0%, 100% {
-    transform: translateX(-50%) rotate(-8deg);
-  }
-
-  50% {
-    transform: translateX(-50%) rotate(-4deg);
-  }
-}
-
-/* ============================================================
-   DECORATIVE STARS — WELCOME PAGE
-   ============================================================ */
-
-.decor-star {
-  position: absolute;
-
-  width: 55px;
-  height: auto;
-
-  z-index: 1;
-  pointer-events: none;
-
-  filter: drop-shadow(0 5px 10px rgba(255, 255, 255, 0.35));
-}
-
-
-/* =========================
-   STAR 1 — TOP LEFT
-   ========================= */
-
-.star-1 {
-  top: 60px;
-  left: 350px;
-
-  transform: rotate(-12deg);
-}
-
-
-/* =========================
-   STAR 2 — TOP RIGHT
-   ========================= */
-
-.star-2 {
-  top: 120px;
-  right: 100px;
-
-  transform: rotate(15deg);
-}
-
-
-/* =========================
-   STAR 3 — TOP CENTER/RIGHT
-   ========================= */
-
-.star-3 {
-  top: 210px;
-  right: 450px;
-
-  transform: rotate(-8deg);
-}
-
-/* STAR 4 — TOP / LEFT-CENTER */
-.star-4 {
-  top: 300px;
-  left: 500px;
-  transform: rotate(18deg);
-}
-
-
-/* STAR 5 — MIDDLE RIGHT */
-.star-5 {
-  top: 500px;
-  right: 450px;
-  transform: rotate(-15deg);
-}
-
-
-/* STAR 6 — LOWER LEFT */
-.star-6 {
-  top: 520px;
-  left: 100px;
-  transform: rotate(10deg);
-}
-
-
-/* STAR 7 — LOWER RIGHT */
-.star-7 {
-  top: 640px;
-  right: 750px;
-  transform: rotate(-20deg);
+.welcome-section {
+  position: relative;
 }
 
 :root {
-  --red: #E50914;
+
+  -red: #E50914;
   --red-dark: #A00018;
   --black: #0c0708;
   --white: #FFFFFF;
@@ -175,6 +53,9 @@ img { max-width: 100%; display: block; }
   .music-vinyl {
     animation-duration: 4s !important;
     animation-iteration-count: infinite !important;
+  }
+  .balloon-18 {
+    animation: none !important;
   }
 }
 
@@ -264,7 +145,7 @@ img { max-width: 100%; display: block; }
   100% { transform: translateY(105vh) rotate(540deg); opacity: 0.9; }
 }
 
-/* -------------------------------------------------- Particle layer --- *
+/* -------------------------------------------------- Particle layer --- */
 #particle-layer {
   position: fixed;
   inset: 0;
@@ -278,32 +159,7 @@ img { max-width: 100%; display: block; }
   pointer-events: none;
 }
 
-/* --------------------------------------------------- Step dots ------- */
-.step-dots {
-  position: fixed;
-  top: 18px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  gap: 8px;
-  z-index: 50;
-}
-
-.step-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.25);
-  transition: background 0.3s ease, transform 0.3s ease;
-}
-
-.step-dot.active {
-  background: linear-gradient(135deg, var(--red), var(--pink));
-  transform: scale(1.3);
-}
-
 /* --------------------------------------------------- Step / section -- */
-
 
 .step {
   display: none; /* hidden unless .active-step */
@@ -391,52 +247,309 @@ img { max-width: 100%; display: block; }
 .continue-btn { margin-top: 5px; }
 
 /* ============================================================ */
-/* WELCOME                                                        */
+/* WELCOME — RED SCRAPBOOK DESIGN                                 */
+/* ------------------------------------------------------------ */
+/* Layout: "Happy Birthday" script heading + an 18th balloon on   */
+/* one side, a September desk-calendar page with the 29th circled */
+/* in the middle, and the big full-body cutout photo on the other */
+/* side. A caption block + CTA button sit underneath. Everything  */
+/* collapses to a single centered column on phones.               */
 /* ============================================================ */
-.welcome-section { padding-top: 0; }
 
-.bg-gradient {
+.welcome-section {
+  padding: 0;
+  overflow: hidden;
+  align-items: stretch;
+  justify-content: flex-start;
+}
+
+.scrapbook-bg {
   position: absolute;
   inset: 0;
   z-index: 0;
   background:
-    radial-gradient(circle at 30% 20%, rgba(229, 9, 20, 0.35), transparent 55%),
-    radial-gradient(circle at 75% 75%, rgba(160, 0, 24, 0.45), transparent 60%),
-    linear-gradient(160deg, #1a0306 0%, var(--black) 55%, #000000 100%);
+    radial-gradient(circle at 20% 15%, rgba(229, 9, 20, 0.45), transparent 55%),
+    radial-gradient(circle at 85% 80%, rgba(160, 0, 24, 0.5), transparent 60%),
+    linear-gradient(160deg, #2a0509 0%, var(--black) 55%, #000000 100%);
 }
 
-.welcome-content {
+/* Soft dotted "wallpaper" texture standing in for the reference's
+   floral pattern, kept subtle so it doesn't compete with the photos */
+.scrapbook-pattern {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  opacity: 0.5;
+  background-image:
+    radial-gradient(rgba(255, 107, 129, 0.18) 2px, transparent 2.5px),
+    radial-gradient(rgba(255, 107, 129, 0.1) 2px, transparent 2.5px);
+  background-size: 46px 46px, 46px 46px;
+  background-position: 0 0, 23px 23px;
+  pointer-events: none;
+}
+
+/* ============================================================
+   TWO-PANEL WELCOME LAYOUT
+   ------------------------------------------------------------
+   Big screens: both panels are sized to fit together in one
+   view — nothing to scroll, everything is visible at once.
+   Phones (see the max-width:600px block below): each panel
+   takes the full screen and .welcome-panels becomes a
+   scroll-snap container, so panel 1 shows first and a swipe/
+   scroll down reveals panel 2.
+   ============================================================ */
+
+.welcome-panels {
   position: relative;
   z-index: 2;
+
+  width: 100%;
+  height: 100%;
+
+  overflow: hidden;
+
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  justify-content: center;
+
+  scroll-snap-type: none;
+}
+
+.welcome-panels::-webkit-scrollbar { display: none; }
+
+.welcome-panel {
+  position: relative;
+
+  width: 50%;
+  flex: 1 1 50%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 14px 24px;
+  box-sizing: border-box;
+}
+
+/* ---- PANEL 1: cutout photo on the left, heading/balloon/calendar
+       stacked on the right — sized compactly so it shares the
+       screen with panel 2 below it ---- */
+
+.welcome-panel-1 {
+  gap: clamp(16px, 3vw, 40px);
+  flex-wrap: wrap;
+}
+
+.panel1-photo {
+  flex: 0 1 260px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  max-width: 260px;
+}
+
+.panel1-deco {
+  flex: 0 1 200px;
+  max-width: 200px;
+
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 6px;
+
+  gap: 14px;
 }
 
-.eyebrow-heart { font-size: 2rem; animation: heartbeat 1.8s ease-in-out infinite; }
 
-@keyframes heartbeat {
-  0%, 100% { transform: scale(1); }
-  25% { transform: scale(1.18); }
-  40% { transform: scale(0.96); }
+/* ---- MIDDLE: September desk-calendar, the 29th circled ---- */
+
+.scrapbook-calendar {
+  flex-shrink: 0;
+
+  position: relative;
+
+  width: min(140px, 32vw);
+
+  background: var(--cream);
+  border-radius: 14px;
+  overflow: hidden;
+
+  box-shadow:
+    0 25px 55px rgba(0, 0, 0, 0.55),
+    0 0 30px rgba(229, 9, 20, 0.25);
+
+  transform: rotate(4deg);
 }
 
-.script-heading {
+.calendar-spiral {
+  position: absolute;
+  top: -8px;
+  left: 0;
+  right: 0;
+
+  display: flex;
+  justify-content: space-evenly;
+
+  z-index: 2;
+}
+
+.calendar-spiral span {
+  width: 12px;
+  height: 16px;
+  border-radius: 4px;
+  background: #672828;
+  box-shadow: inset 0 2px 3px rgba(0, 0, 0, 0.35);
+}
+
+.calendar-month {
+  background: linear-gradient(135deg, var(--black) 0%, var(--red-dark) 100%);
+  color: #060606;
+  text-align: center;
+  padding: 10px 0 6px;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.85rem;
+  letter-spacing: 0.03em;
+}
+
+
+
+
+
+.cal-cell.cal-29 {
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff5f5;
+  color: #E50914;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 2.2rem;
+  border-radius: 50%;
+  margin: 0 auto;
+}
+
+.scrapbook-script {
   font-family: var(--font-script);
   font-weight: 400;
-  font-size: clamp(3rem, 11vw, 6.5rem);
-  line-height: 1.05;
-  color: var(--white);
-  text-shadow: 0 0 40px rgba(229, 9, 20, 0.6);
-  margin: 4px 0 18px;
+  font-size: clamp(1.7rem, 2.6vw, 2.4rem);
+  line-height: 0.95;
+  color: var(--cream);
+  text-shadow: 0 0 30px rgba(229, 9, 20, 0.55);
+  transform: rotate(3deg);
+  margin: 0;
+  text-align: center;
 }
 
-.welcome-sub {
-  font-weight: 300;
-  font-size: clamp(1rem, 2.4vw, 1.25rem);
+/* ============================================================
+   MAKE WELCOME PHOTO MUCH BIGGER
+   ============================================================ */
+
+.scrapbook-right {
+    width: 100vw ;
+    max-width: 999px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+.scrapbook-cutout {
+    width: 850px !important;
+    max-width: 900px !important;
+    height: 150vh ;
+    max-height: 800px !important;
+    object-fit: contain !important;
+    display: block !important;
+    margin: 0 auto !important;
+
+    -webkit-mask-image: linear-gradient(
+        to bottom,
+        #000 70%,
+        transparent 97%
+    );
+
+    mask-image: linear-gradient(
+        to bottom,
+        #000 70%,
+        transparent 97%
+    );
+}
+/* ---- Scroll hint — only relevant on phones, where the panels
+       are full-screen and stacked; hidden by default here ---- */
+
+.scroll-hint {
+  display: none;
+
+  position: absolute;
+  left: 50%;
+  bottom: 20px;
+  transform: translateX(-50%);
+
+  z-index: 4;
+
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+
   color: var(--pink);
-  margin-bottom: 42px;
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+
+  pointer-events: none;
+  animation: scrollHintBounce 2s ease-in-out infinite;
+}
+
+.scroll-hint-arrow { font-size: 1.1rem; line-height: 1; }
+
+@keyframes scrollHintBounce {
+  0%, 100% { transform: translate(-50%, 0); opacity: 0.55; }
+  50%      { transform: translate(-50%, 8px); opacity: 1; }
+}
+
+/* ---- PANEL 2: caption + CTA, held toward the right side of the
+       panel, directly beneath panel 1 on the same screen ---- */
+
+.welcome-panel-2 {
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  background: var(--black);
+}
+
+.welcome-panel-2 .scrapbook-caption {
+  width: min(420px, 100%);
+  margin-left: 0;
+  text-align: center;
+}
+
+.scrapbook-caption {
+  z-index: 3;
+  width: min(560px, 88vw);
+  text-align: center;
+}
+
+.caption-headline {
+  font-family: var(--font-script);
+  font-size: clamp(1.2rem, 2vw, 1.7rem);
+  color: var(--white);
+  margin-bottom: 6px;
+}
+
+.caption-message {
+  font-weight: 300;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: var(--pink);
+}
+
+/* ---- CTA button, sits under the message inside panel 2 ---- */
+
+.open-surprise-btn {
+  margin-top: 14px;
 }
 
 /* ============================================================ */
@@ -672,6 +785,110 @@ img { max-width: 100%; display: block; }
     height: 38px;
 
     font-size: 18px;
+  }
+
+  /* Welcome section on phones ONLY: switch from the desktop's
+     "both panels visible together" layout to full-height panels
+     that swipe/scroll-snap — panel 1 shows first, scrolling down
+     reveals panel 2. */
+
+  .welcome-panels {
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    scroll-snap-type: y mandatory;
+    -webkit-overflow-scrolling: touch;
+
+    scrollbar-width: none;
+
+    display: block;
+  }
+
+  .welcome-panels::-webkit-scrollbar { display: none; }
+
+  .welcome-panel {
+    width: 100%;
+    min-height: 100%;
+
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+
+    padding: 70px 16px 30px;
+  }
+
+  .welcome-panel-1 {
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .panel1-photo {
+    flex: 1.1 1 0;
+    max-width: none;
+    align-items: center;
+  }
+
+  .panel1-deco {
+    flex: 1 1 0;
+    max-width: none;
+    gap: 14px;
+  }
+
+  .balloon-18 {
+    width: 60px;
+    height: 74px;
+  }
+
+  .balloon-18::after {
+    height: 26px;
+  }
+
+  .balloon-18-number {
+    font-size: 1.15rem;
+  }
+
+  .scrapbook-calendar {
+    width: 32vw;
+    min-width: 100px;
+  }
+
+  .calendar-month {
+    padding: 12px 0 6px;
+    font-size: 0.8rem;
+  }
+
+  .cal-cell.cal-29 {
+    width: 68px;
+    height: 68px;
+    font-size: 2.6rem;
+  }
+
+  .scrapbook-script {
+    font-size: clamp(1.7rem, 9vw, 2.2rem);
+  }
+
+  .scrapbook-cutout {
+    max-width: none;
+    height: 46vh;
+  }
+
+  .scroll-hint {
+    display: flex;
+    bottom: 12px;
+  }
+
+  .welcome-panel-2 {
+    align-items: center;
+  }
+
+  .welcome-panel-2 .scrapbook-caption {
+    width: 100%;
+    margin-left: 0;
+    text-align: center;
+  }
+
+  .caption-message {
+    font-size: 0.8rem;
   }
 
 }
@@ -1191,10 +1408,6 @@ img { max-width: 100%; display: block; }
   .section { padding: 70px 16px 30px; }
   .back-btn { top: 12px; left: 12px; padding: 6px 12px; font-size: 0.78rem; }
   .photo-gallery { gap: 8px; padding: 6px; }
-  .photo-gallery-display { width: 240px; min-height: 320px; }
-  .polaroid { width: 230px; padding: 10px 10px 42px; }
-  .polaroid-photo-wrap { height: 210px; }
-  .gallery-arrow { width: 40px; height: 40px; font-size: 20px; }
   .kirsten-link-row { flex-direction: column; }
   .kirsten-link-input { width: 100%; }
   .music-reminder-card { padding: 26px 20px; }
@@ -1258,13 +1471,12 @@ img { max-width: 100%; display: block; }
 
 /* ============================================================
    DAHAN DAHAN MUSIC STICKER
-   (floating "now playing" widget, top-right)
+   (floating "now playing" widget)
    ============================================================ */
 
 .music-display {
   position: fixed;
 
-  /* Below the music reminder */
   bottom: 25px;
   right: 24px;
 
@@ -1274,9 +1486,21 @@ img { max-width: 100%; display: block; }
   align-items: center;
   height: 100px;
 
-  pointer-events: none;
+  /* Draggable — see music-drag.js. touch-action:none stops the
+     browser from scrolling the page while dragging on phones. */
+  pointer-events: auto;
+  touch-action: none;
+  cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
 
   animation: musicStickerIn 1s ease both;
+}
+
+.music-display.is-dragging {
+  cursor: grabbing;
+  animation: none;
+  transition: none;
 }
 
 
@@ -1519,7 +1743,3 @@ img { max-width: 100%; display: block; }
     font-size: 7px;
   }
 }
-
-
-
-
