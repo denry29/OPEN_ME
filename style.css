@@ -12,7 +12,7 @@
 
 :root {
 
-  -red: #E50914;
+  --red: #E50914;
   --red-dark: #A00018;
   --black: #0c0708;
   --white: #FFFFFF;
@@ -54,9 +54,6 @@ img { max-width: 100%; display: block; }
     animation-duration: 4s !important;
     animation-iteration-count: infinite !important;
   }
-  .balloon-18 {
-    animation: none !important;
-  }
 }
 
 /* ============================================================
@@ -67,7 +64,7 @@ img { max-width: 100%; display: block; }
   position: absolute;
 
   /* Position above the reminder card */
-  top: -96px;
+  top: 170px;
   left: 50%;
 
   /* Size */
@@ -169,10 +166,17 @@ img { max-width: 100%; display: block; }
   display: flex;
 }
 
+/* Same flat gradient on every step, so the background never visibly
+   changes as Continue moves from one section to the next. */
+.section {
+  background: linear-gradient(180deg, #150406 0%, #1c0509 100%);
+}
+
 .section {
   position: relative;
   width: 100%;
   height: 100vh;
+  height: 100dvh;
   padding: 90px 20px 40px;
   flex-direction: column;
   align-items: center;
@@ -249,11 +253,13 @@ img { max-width: 100%; display: block; }
 /* ============================================================ */
 /* WELCOME — RED SCRAPBOOK DESIGN                                 */
 /* ------------------------------------------------------------ */
-/* Layout: "Happy Birthday" script heading + an 18th balloon on   */
-/* one side, a September desk-calendar page with the 29th circled */
-/* in the middle, and the big full-body cutout photo on the other */
-/* side. A caption block + CTA button sit underneath. Everything  */
-/* collapses to a single centered column on phones.               */
+/* Layout: the big full-body cutout photo sits in the middle of   */
+/* panel 1, with the "Happy Birthday" script LAYERED BEHIND it    */
+/* (decorative — it is meant to be partly hidden by the photo)    */
+/* and the September desk-calendar pinned to the photo's own box. */
+/* Because the calendar is positioned against .panel1-photo, it   */
+/* keeps the exact same spot on phones as on desktop.             */
+/* A caption block + CTA button sit in panel 2.                   */
 /* ============================================================ */
 
 .welcome-section {
@@ -261,16 +267,19 @@ img { max-width: 100%; display: block; }
   overflow: hidden;
   align-items: stretch;
   justify-content: flex-start;
+  background: var(--black); /* fallback so nothing but black ever shows
+                                behind panel 2 once panel 1 (and its red
+                                scrapbook-bg) has scrolled out of view */
 }
 
+/* Same flat gradient the other steps use (.letter-section,
+   .cakes-section, etc.) so the background doesn't visibly change
+   when Continue is pressed and the next step fades in. */
 .scrapbook-bg {
   position: absolute;
   inset: 0;
   z-index: 0;
-  background:
-    radial-gradient(circle at 20% 15%, rgba(229, 9, 20, 0.45), transparent 55%),
-    radial-gradient(circle at 85% 80%, rgba(160, 0, 24, 0.5), transparent 60%),
-    linear-gradient(160deg, #2a0509 0%, var(--black) 55%, #000000 100%);
+  background: linear-gradient(180deg, #150406 0%, #1c0509 100%);
 }
 
 /* Soft dotted "wallpaper" texture standing in for the reference's
@@ -279,7 +288,7 @@ img { max-width: 100%; display: block; }
   position: absolute;
   inset: 0;
   z-index: 0;
-  opacity: 0.5;
+  opacity: 0.22;
   background-image:
     radial-gradient(rgba(255, 107, 129, 0.18) 2px, transparent 2.5px),
     radial-gradient(rgba(255, 107, 129, 0.1) 2px, transparent 2.5px);
@@ -332,337 +341,248 @@ img { max-width: 100%; display: block; }
   box-sizing: border-box;
 }
 
-/* ---- PANEL 1: cutout photo on the left, heading/balloon/calendar
-       stacked on the right — sized compactly so it shares the
-       screen with panel 2 below it ---- */
+/* ---- PANEL 1: cutout photo, with the script behind it and the
+       calendar pinned to its corner ---- */
 
 .welcome-panel-1 {
-  gap: clamp(16px, 3vw, 40px);
-  flex-wrap: wrap;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .panel1-photo {
-  flex: 0 1 260px;
+  position: relative; /* anchors both the overlay text and the calendar */
+  width: 100%;
+  max-width: 900px;
+
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   justify-content: center;
-  max-width: 260px;
 }
 
-.panel1-deco {
-  flex: 0 1 200px;
-  max-width: 200px;
+/* ---- "Happy Birthday" overlay — sits in FRONT of the cutout photo,
+       pinned near the bottom, styled to echo puffy balloon lettering
+       (pink fill, white highlight line, soft drop shadow). ---- */
+
+.photo-birthday-text {
+  position: absolute;
+  left: 35%;
+  bottom: -5%;
+  transform: translateX(-50%);
+  z-index: 3; /* above .scrapbook-cutout (z-index: 2) */
 
   display: flex;
   flex-direction: column;
   align-items: center;
 
-  gap: 14px;
+  pointer-events: none;
+  text-align: center;
 }
 
+.photo-birthday-text .happy-text,
+.photo-birthday-text .birthday-text {
+  font-family: "Poppins", sans-serif;
+  font-weight: 800;
+  color: #f8eff0;
+  -webkit-text-stroke: 1.5px #661021;
+  letter-spacing: 0.01em;
+  
+   
+}
 
-/* ---- MIDDLE: September desk-calendar, the 29th circled ---- */
+.happy-text {
+  font-size: clamp(2.4rem, 6vw, 4rem);
+
+}
+
+.birthday-text {
+  font-size: clamp(1.7rem, 4.4vw, 2.9rem);
+  margin-top: -0.80em;
+  
+}
+
+@media (max-width: 600px) {
+  .photo-birthday-text {
+    bottom: 3%;
+  }
+
+  .happy-text {
+    font-size: clamp(2rem, 9vw, 3.2rem);
+  }
+
+  .birthday-text {
+    font-size: clamp(1.4rem, 6.5vw, 2.3rem);
+  }
+}
+
+/* ---- Calendar sticker, pinned to .panel1-photo — the SAME
+       percentages are used at every screen size, so it holds its
+       desktop position on phones too ---- */
 
 .scrapbook-calendar {
-  flex-shrink: 0;
-
-  position: relative;
+  position: absolute;
+  right: 17%;
+  bottom: 80%;
+  z-index: 4;
 
   width: min(140px, 32vw);
 
-  background: var(--cream);
+  /* Clean white calendar body */
+  background: #ffffff;
+  
   border-radius: 14px;
-  overflow: hidden;
+  overflow: visible;
 
   box-shadow:
-    0 25px 55px rgba(0, 0, 0, 0.55),
-    0 0 30px rgba(229, 9, 20, 0.25);
+    0 25px 55px rgba(0, 0, 0, 0.45),
+    0 8px 18px rgba(255, 255, 255, 0.25);
 
   transform: rotate(4deg);
 }
 
+/* ============================================================
+   SILVER SHINY SPIRAL / SPRINGS
+   ============================================================ */
+
 .calendar-spiral {
   position: absolute;
-  top: -8px;
-  left: 0;
-  right: 0;
+  top: -10px;
+  left: 8px;
+  right: 8px;
 
   display: flex;
   justify-content: space-evenly;
+  align-items: flex-start;
 
-  z-index: 2;
+  z-index: 5;
 }
 
 .calendar-spiral span {
+  position: relative;
+
   width: 12px;
-  height: 16px;
-  border-radius: 4px;
-  background: #672828;
-  box-shadow: inset 0 2px 3px rgba(0, 0, 0, 0.35);
+  height: 18px;
+  border-radius: 5px;
+
+  /* Shiny silver metal */
+  background: linear-gradient(
+    90deg,
+    #6f6f6f 0%,
+    #d8d8d8 18%,
+    #ffffff 38%,
+    #bcbcbc 55%,
+    #f8f8f8 72%,
+    #777777 100%
+  );
+
+  border: 1px solid #9b9b9b;
+
+  box-shadow:
+    inset 1px 0 1px rgba(255,255,255,0.95),
+    inset -1px 0 2px rgba(0,0,0,0.35),
+    0 2px 4px rgba(0,0,0,0.3);
 }
+
+/* Small white shine on each metal spring */
+.calendar-spiral span::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 3px;
+  width: 3px;
+  height: 12px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.85);
+  filter: blur(0.3px);
+}
+
+/* ============================================================
+   SEPTEMBER — ONLY MONTH NAME
+   ============================================================ */
 
 .calendar-month {
-  background: linear-gradient(135deg, var(--black) 0%, var(--red-dark) 100%);
-  color: #060606;
+  background: #ffffff;
+  color: #111111;
+
   text-align: center;
-  padding: 10px 0 6px;
+  padding: 12px 0 7px;
+
   font-family: var(--font-display);
-  font-weight: 600;
-  font-size: 0.85rem;
-  letter-spacing: 0.03em;
+  font-weight: 700;
+  font-size: 0.9rem;
+  letter-spacing: 0.04em;
+
+  border-bottom: 1px solid #e2e2e2;
 }
 
+/* ============================================================
+   29 — ONLY DATE SHOWN
+   ============================================================ */
 
-
-
+.calendar-days {
+  padding: 10px 0 14px;
+}
 
 .cal-cell.cal-29 {
   width: 60px;
   height: 60px;
+
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #fff5f5;
-  color: #E50914;
+
+  background: #ffffff;
+  color: #3d1416;
+
   font-family: var(--font-display);
   font-weight: 800;
-  font-size: 2.2rem;
+  font-size: 4.25rem;
+
   border-radius: 50%;
   margin: 0 auto;
 }
 
-.scrapbook-script {
-  font-family: var(--font-script);
-  font-weight: 400;
-  font-size: clamp(1.7rem, 2.6vw, 2.4rem);
-  line-height: 0.95;
-  color: var(--cream);
-  text-shadow: 0 0 30px rgba(229, 9, 20, 0.55);
-  transform: rotate(3deg);
-  margin: 0;
-  text-align: center;
-}
-
-/* ============================================================
-   MAKE WELCOME PHOTO MUCH BIGGER
-   ============================================================ */
-
-.scrapbook-right {
-    width: 100vw ;
-    max-width: 999px !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-}
-
 .scrapbook-cutout {
-    width: 100%;
-    max-width: 220px;
-    height: min(50vh, 400px);
-    object-fit: contain;
-    display: block;
-    margin: 0 auto;
+  position: relative;
+  z-index: 2; /* sits ON TOP of the script */
 
-    -webkit-mask-image: linear-gradient(
-        to bottom,
-        #000 70%,
-        transparent 97%
-    );
+  width: 100%;
+  max-width: 527px;
 
-    mask-image: linear-gradient(
-        to bottom,
-        #000 70%,
-        transparent 97%
-    );
-}
+  height: min(80vh, 560px);
+
+  object-fit: cover;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  align-self: center;
 
 
-/* =========================================================
-   PHONE VERSION
-   Makes the cutout MUCH BIGGER ONLY ON MOBILE
-   ========================================================= */
-
-@media (max-width: 600px) {
-
-    .scrapbook-cutout {
-        width: 100%;
-        max-width: none;
-
-        /* About 3x the previous visual size */
-        height: 75vh;
-
-        object-fit: contain;
-
-        margin: 0 auto;
-
-        -webkit-mask-image: linear-gradient(
-            to bottom,
-            #000 65%,
-            #000 75%,
-            transparent 98%
-        );
-
-        mask-image: linear-gradient(
-            to bottom,
-            #000 65%,
-            #000 75%,
-            transparent 98%
-        );
-    }
-
-}
-/* ---- Scroll hint — only relevant on phones, where the panels
-       are full-screen and stacked; hidden by default here ---- */
-
-.scroll-hint {
-  display: none;
-
-  position: absolute;
-  left: 50%;
-  bottom: 20px;
-  transform: translateX(-50%);
-
-  z-index: 4;
-
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-
-  color: var(--pink);
-  font-size: 0.78rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-
-  pointer-events: none;
-  animation: scrollHintBounce 2s ease-in-out infinite;
-}
-
-.scroll-hint-arrow { font-size: 1.1rem; line-height: 1; }
-
-@keyframes scrollHintBounce {
-  0%, 100% { transform: translate(-50%, 0); opacity: 0.55; }
-  50%      { transform: translate(-50%, 8px); opacity: 1; }
-}
-
-/* ---- PANEL 2: caption + CTA, held toward the right side of the
-       panel, directly beneath panel 1 on the same screen ---- */
-
-.welcome-panel-2 {
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-
+  /* Sits inside one framed box with a clean lining (border) —
+     no fade-out mask, no hover interaction, just a static frame. */
+  border: 3px solid var(--white);
+  border-radius: 18px;
   background: var(--black);
+  box-shadow:
+    0 20px 50px rgba(0, 0, 0, 0.55),
+    0 0 25px rgba(229, 9, 20, 0.2);
 }
-
-.welcome-panel-2 .scrapbook-caption {
-  width: min(420px, 100%);
-  margin-left: 0;
-  text-align: center;
-}
-
-.scrapbook-caption {
-  z-index: 3;
-  width: min(560px, 88vw);
-  text-align: center;
-}
-
-.caption-headline {
-  font-family: var(--font-script);
-  font-size: clamp(1.2rem, 2vw, 1.7rem);
-  color: var(--white);
-  margin-bottom: 6px;
-}
-
-.caption-message {
-  font-weight: 300;
-  font-size: 0.82rem;
-  line-height: 1.5;
-  color: var(--pink);
-}
-
-
-/* =========================================================
-   MOBILE BLACK PANEL
-   Full-screen black with fading edges
-   ========================================================= */
 
 @media (max-width: 600px) {
-
-    /* The panel itself */
-    #welcome {
-        position: relative;
-
-        width: 100vw;
-        min-width: 100vw;
-
-        height: 100vh;
-        min-height: 100vh;
-
-        margin: 0;
-        padding: 0;
-
-        background: #0c0708;
-
-        overflow: hidden;
-    }
-
-
-    /* Fading black edges / corners */
-    #welcome::before {
-        content: "";
-        position: absolute;
-        inset: 0;
-
-        pointer-events: none;
-
-        background:
-            radial-gradient(
-                ellipse at top left,
-                transparent 0%,
-                rgba(12, 7, 8, 0.35) 35%,
-                rgba(12, 7, 8, 0.85) 70%,
-                #0c0708 100%
-            );
-
-        z-index: 0;
-    }
-
-
-    /* Top fading effect */
-    #welcome::after {
-        content: "";
-        position: absolute;
-
-        top: 0;
-        left: 0;
-
-        width: 100%;
-        height: 180px;
-
-        pointer-events: none;
-
-        background: linear-gradient(
-            to bottom,
-            rgba(12, 7, 8, 0.15),
-            rgba(12, 7, 8, 0)
-        );
-
-        z-index: 0;
-    }
-
-
-    /* Keep text and button above the fading layer */
-    #welcome > * {
-        position: relative;
-        z-index: 2;
-    }
+  .scrapbook-cutout {
+    align-self: center !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
 }
+
+
 
 /* ---- CTA button, sits under the message inside panel 2 ---- */
 
 .open-surprise-btn {
-  margin-top: 14px;
+  margin-top: 400px;
+ 
 }
 
 /* ============================================================ */
@@ -709,7 +629,7 @@ img { max-width: 100%; display: block; }
 
   width: max-content;
 
-  animation: filmMove 22s linear infinite;
+  animation: filmMove 25s linear infinite;
 
   will-change: transform;
 }
@@ -809,7 +729,7 @@ img { max-width: 100%; display: block; }
   }
 
   100% {
-    transform: translateX(-1560px);
+    transform: translateX(-3000px);
   }
 
 }
@@ -930,59 +850,30 @@ img { max-width: 100%; display: block; }
   }
 
   .welcome-panel-1 {
-    flex-wrap: nowrap;
-    align-items: center;
-    gap: 14px;
+    display: flex;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
   }
 
   .panel1-photo {
-    flex: 1.1 1 0;
-    max-width: none;
-    align-items: center;
+    width: 100% !important;
+    max-width: none !important;
+    align-items: center !important;
   }
 
-  .panel1-deco {
-    flex: 1 1 0;
-    max-width: none;
-    gap: 14px;
-  }
-
-  .balloon-18 {
-    width: 60px;
-    height: 74px;
-  }
-
-  .balloon-18::after {
-    height: 26px;
-  }
-
-  .balloon-18-number {
-    font-size: 1.15rem;
-  }
-
-  .scrapbook-calendar {
-    width: 32vw;
-    min-width: 100px;
-  }
-
-  .calendar-month {
-    padding: 12px 0 6px;
-    font-size: 0.8rem;
-  }
-
-  .cal-cell.cal-29 {
-    width: 68px;
-    height: 68px;
-    font-size: 2.6rem;
-  }
+  /* NOTE: .scrapbook-calendar is deliberately NOT overridden here.
+     It stays pinned to .panel1-photo with the same right/bottom
+     percentages as desktop, so it keeps the same spot on the photo. */
 
   .scrapbook-script {
-    font-size: clamp(1.7rem, 9vw, 2.2rem);
+    font-size: clamp(2.6rem, 16vw, 4.4rem);
   }
 
   .scrapbook-cutout {
-    max-width: none;
-    height: 46vh;
+    width: 90% !important;
+    max-width: 340px !important;
+    height: 48vh !important;
   }
 
   .scroll-hint {
@@ -1189,7 +1080,7 @@ img { max-width: 100%; display: block; }
 
 /* PIN box */
 .letter-pin-input {
-  width: 220px;
+  width: min(220px, 86vw);
   height: 58px;
   display: block;
   margin: 0 auto 16px;
@@ -1352,7 +1243,7 @@ img { max-width: 100%; display: block; }
 /* ============================================================ */
 /* CAKE SELECTION (2D grid — this styling stays untouched)        */
 /* ============================================================ */
-.cakes-section { background: linear-gradient(180deg, #1c0509 0%, #150406 100%); }
+.cakes-section { background: linear-gradient(180deg, #150406 0%, #1c0509 100%); }
 
 .cake-controls {
   width: 100%;
@@ -1452,66 +1343,31 @@ img { max-width: 100%; display: block; }
 /* no radius, no background — it exists only so Three.js has a   */
 /* sized element to measure and attach its <canvas> to.          */
 /* ============================================================ */
-.cake-celebration-section { background: linear-gradient(180deg, #1c0509 0%, #150406 100%); }
-
-.you-chose-label { font-size: 1.05rem; color: var(--pink); margin-bottom: 4px; }
-.chosen-cake-name { font-size: clamp(1.8rem, 5vw, 2.6rem); color: var(--white); margin-bottom: 18px; }
+.cake-celebration-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  background: linear-gradient(180deg, #150406 0%, #1c0509 100%);
+}
 
 #cake-3d-container {
   width: min(360px, 82vw);
   height: min(360px, 82vw);
   margin: 0 auto 20px;
-  position: relative;
-  /* intentionally no background / border / border-radius / overflow —
-     this div is an invisible mount point, not a visual container */
-}
-
-#cake-3d-container canvas { touch-action: none; }
-
-.wish-result { margin-top: 24px; animation: fade-in-up 0.6s ease both; }
-
-@keyframes fade-in-up {
-  from { opacity: 0; transform: translateY(14px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.wish-headline { font-family: var(--font-display); font-size: 1.5rem; color: var(--white); }
-.wish-sub { color: var(--pink); margin-top: 6px; }
-
-.celebration-actions {
-  margin-top: 28px;
   display: flex;
-  flex-wrap: wrap;
-  gap: 14px;
+  align-items: center;
   justify-content: center;
 }
 
-/* ============================================================ */
-/* FINAL                                                          */
-/* ============================================================ */
-.bg-gradient-final {
-  background:
-    radial-gradient(circle at 50% 30%, rgba(229, 9, 20, 0.4), transparent 60%),
-    linear-gradient(200deg, #000000 0%, #1a0306 60%, var(--black) 100%);
+#cake-3d-container canvas {
+  display: block;
+  margin: 0 auto;
 }
 
-.final-title {
-  position: relative;
-  z-index: 2;
-  font-size: clamp(1.8rem, 4.8vw, 2.8rem);
-  color: var(--white);
-  margin-bottom: 20px;
-  line-height: 1.25;
-}
-
-.final-message {
-  position: relative;
-  z-index: 2;
-  max-width: 460px;
-  color: var(--pink);
-  font-size: 1.02rem;
-  line-height: 1.7;
-  font-weight: 300;
+#make-a-wish-3d-btn {
+  display: block;
+  margin: 0 auto;
 }
 
 /* ============================================================ */
@@ -1854,5 +1710,293 @@ img { max-width: 100%; display: block; }
 
   .music-label {
     font-size: 7px;
+  }
+}
+
+/* =========================================================
+   MOBILE — RED CHECK DECORATIONS
+   LARGE / WIDE LIKE DESKTOP
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+  body::before,
+  body::after {
+    width: 500px;
+    height: 155px;
+    opacity: 0.9;
+    z-index: 1;
+    background-size: cover;
+  }
+
+  /* TOP LEFT */
+  body::before {
+    top: -100px;
+    left: -90px;
+    transform: rotate(-12deg);
+  }
+
+  /* BOTTOM RIGHT */
+  body::after {
+    right: -90px;
+    bottom: -100px;
+    transform: rotate(-12deg);
+  }
+
+}
+
+/* ============================================================
+   DESKTOP FIX: center the photo on the full screen, with the
+   surprise button stacked directly below it
+   (mobile layout below 600px is untouched)
+   ============================================================ */
+@media (min-width: 601px) {
+
+  .welcome-panels {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+  }
+
+  .welcome-panel-1 {
+    width: 100%;
+    flex: 0 1 auto;
+  }
+
+  .welcome-panel:not(.welcome-panel-1) {
+    width: auto;
+    flex: 0 1 auto;
+    padding: 0;
+  }
+
+  .open-surprise-btn {
+    margin-top: 0;
+  }
+
+}
+
+.flower-decoration {
+  position: absolute;
+  width: 350px;
+  height: auto;
+  left: -80px;
+  top: 450px;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.flower1-decoration {
+  position: absolute;
+  width: 350px;
+  height: auto;
+  right: -80px;
+  top: -100px;
+  z-index: 3;
+  pointer-events: none;
+}
+
+/* ============================================================
+   REMOVE SCROLL-DOWN / SWIPE BEHAVIOR ON MOBILE
+   Panels now stack normally instead of scroll-snapping
+   ============================================================ */
+@media (max-width: 600px) {
+
+  .welcome-panels {
+    scroll-snap-type: none;
+    overflow-y: visible;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: auto;
+    gap: 20px;
+  }
+
+  .welcome-panel {
+    scroll-snap-align: none;
+    scroll-snap-stop: normal;
+    min-height: auto;
+    width: 100%;
+  }
+
+  .scroll-hint {
+    display: none !important;
+  }
+
+  /* The CTA button no longer needs the huge desktop spacer gap —
+     panels already stack with their own gap on mobile. */
+  .open-surprise-btn {
+    margin-top: 12px;
+  }
+
+  /* Pin the flowers to the actual screen corners (position: fixed,
+     relative to the viewport) instead of the panel, and keep most
+     of each image on-screen so they read as corner decoration
+     rather than clipping off the edge of a narrow phone. */
+  .flower-decoration,
+  .flower1-decoration {
+    position: fixed;
+    width: 38vw;
+    max-width: 170px;
+    z-index: 1;
+  }
+
+  .flower-decoration {
+    left: -3vw;
+    top: auto;
+    bottom: -3vw;
+  }
+
+  .flower1-decoration {
+    right: -3vw;
+    top: -3vw;
+  }
+}
+
+/* =========================================================
+   ADDITIONAL PHONE RESPONSIVENESS
+   Small tweaks so every section fits comfortably on narrow
+   viewports (covers phones down to ~320px wide).
+   ========================================================= */
+@media (max-width: 600px) {
+
+  .btn {
+    padding: 13px 24px;
+    font-size: 0.95rem;
+  }
+
+  .btn-large {
+    padding: 16px 32px;
+    font-size: 1rem;
+  }
+
+  .section-title {
+    margin-bottom: 8px;
+  }
+
+  .section-subtitle {
+    margin-bottom: 24px;
+    font-size: 0.92rem;
+  }
+
+  .letter-panel,
+  .letter-paper,
+  .cake-choice-banner {
+    max-width: 100%;
+  }
+
+  .letter-paper {
+    padding: 24px 18px;
+  }
+
+  .snoopy-letter {
+    width: 110px;
+  }
+
+  .reminder-snoopy {
+    width: 130px;
+    top: 130px;
+  }
+
+  .music-reminder-title {
+    font-size: 1.12rem;
+  }
+
+  .cake-grid {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 12px;
+  }
+
+  .modal-card {
+    padding: 24px 18px;
+  }
+
+  .modal-actions .btn {
+    min-width: 110px;
+    padding: 11px 18px;
+    font-size: 0.9rem;
+  }
+
+  .cake-celebration-section .you-chose-label {
+    font-size: 0.92rem;
+  }
+
+  .chosen-cake-name {
+    font-size: clamp(1.4rem, 6vw, 2rem);
+  }
+
+  #make-a-wish-3d-btn {
+    margin-top: 4px;
+  }
+
+  /* Shrink the whole September calendar sticker on phones — smaller
+     card, smaller date circle, tighter text/spiral so it stays
+     proportional to the photo instead of dominating the corner. */
+  .scrapbook-calendar {
+    width: min(96px, 26vw);
+    border-radius: 10px;
+  }
+
+  .calendar-spiral {
+    top: -7px;
+    left: 6px;
+    right: 6px;
+  }
+
+  .calendar-spiral span {
+    width: 8px;
+    height: 13px;
+    border-radius: 3px;
+  }
+
+  .calendar-month {
+    padding: 8px 0 5px;
+    font-size: 0.68rem;
+  }
+
+  .calendar-days {
+    padding: 7px 0 10px;
+  }
+
+  .cal-cell.cal-29 {
+    width: 42px;
+    height: 42px;
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 380px) {
+
+  .scrapbook-calendar {
+    width: min(78px, 24vw);
+    border-radius: 8px;
+  }
+
+  .calendar-month {
+    padding: 6px 0 4px;
+    font-size: 0.58rem;
+  }
+
+  .calendar-days {
+    padding: 5px 0 8px;
+  }
+
+  .cal-cell.cal-29 {
+    width: 34px;
+    height: 34px;
+    font-size: 1.2rem;
+  }
+
+  .film-window {
+    width: 88vw;
+  }
+
+  .film-frame {
+    width: 150px;
+  }
+
+  .letter-pin-input {
+    height: 52px;
+    font-size: 21px;
   }
 }

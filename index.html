@@ -65,7 +65,6 @@
       id="music-reminder-ok"
       class="btn btn-primary btn-large"
       type="button"
-      hidden
     >
       Okay
     </button>
@@ -80,7 +79,8 @@
 
   <!-- ============================================================ -->
   <!-- STEP 1: WELCOME — two swipeable/scrollable panels -->
-  <!-- Panel 1: cutout photo (left) + heading/balloon/calendar        -->
+  <!-- Panel 1: cutout photo with the "Happy Birthday" script behind  -->
+  <!--          it and the September calendar pinned to its corner    -->
   <!-- Panel 2: caption message + Open Your Surprise button           -->
   <!-- On phones, panel 1 shows first and panel 2 reveals by          -->
   <!-- scrolling down inside the section (CSS scroll-snap below).     -->
@@ -93,22 +93,29 @@
 
     <div class="welcome-panels">
 
-      <!-- PANEL 1: photo left, decorative bits right -->
+      <!-- PANEL 1: everything is stacked inside .panel1-photo so the
+           script sits BEHIND the cutout and the calendar stays pinned
+           to the photo itself — same placement on desktop and phone. -->
       <div class="welcome-panel welcome-panel-1">
+        <img src="images/flower.png" class="flower-decoration" alt="">
+        <img src="images/flower.png" class="flower1-decoration" alt="">
 
         <div class="panel1-photo">
+        
+
           <img
             src="images/dhanna8.png"
             class="scrapbook-cutout"
             alt="A photo of Dhanna"
-          >
-        </div>
-
-        <div class="panel1-deco">
-          <h1 class="scrapbook-script">Happy<br>Birthday</h1>
-
-          <div class="balloon-18" role="img" aria-label="Number 18 birthday balloon">
             
+          >
+
+          <!-- Decorative "Happy Birthday" overlay, sitting in front of
+               the photo at the bottom. Hidden from screen readers so
+               it isn't read out twice. -->
+          <div class="photo-birthday-text" aria-hidden="true">
+            <span class="happy-text">Advanced</span>
+            <span class="birthday-text">Happy Legality!</span>
           </div>
 
           <div class="scrapbook-calendar" role="img" aria-label="September calendar with the 29th circled">
@@ -118,34 +125,20 @@
 
             <div class="calendar-month">September</div>
 
-
             <div class="calendar-days" aria-hidden="true">
-
               <span class="cal-cell cal-29">29</span>
             </div>
           </div>
+
         </div>
 
-        <div class="scroll-hint" aria-hidden="true">
-          <span class="scroll-hint-text">Scroll</span>
-          <span class="scroll-hint-arrow">&darr;</span>
-        </div>
 
       </div>
 
       <!-- PANEL 2: message + Open Your Surprise button -->
-      <div class="welcome-panel welcome-panel-2">
+      <div class="welcome-panel">
 
-        <div class="scrapbook-caption">
-          <p class="caption-headline">Happy birthday, Kirsten</p>
-          <p class="caption-message">
-            Today is not just your birthday. It's a quiet celebration of
-            every small moment you've brightened, every heart you've held
-            without even knowing, every day you've made softer just by
-            being here.
-          </p>
-        </div>
-
+    
         <button
           id="open-surprise"
           class="btn btn-primary btn-large open-surprise-btn"
@@ -224,6 +217,57 @@
         <img src="images/dhanna6.jpg" alt="Memory 6">
         <div class="film-sprocket bottom"></div>
       </div>
+
+      <div class="film-frame">
+        <div class="film-sprocket top"></div>
+        <img src="images/dhanna9.jpg" alt="Memory 7">
+        <div class="film-sprocket bottom"></div>
+      </div>
+
+      <div class="film-frame">
+        <div class="film-sprocket top"></div>
+        <img src="images/dhanna10.jpg" alt="Memory 8">
+        <div class="film-sprocket bottom"></div>
+      </div>
+
+      <div class="film-frame">
+        <div class="film-sprocket top"></div>
+        <img src="images/dhanna11.jpg" alt="Memory 9">
+        <div class="film-sprocket bottom"></div>
+      </div>
+
+      <div class="film-frame">
+        <div class="film-sprocket top"></div>
+        <img src="images/dhanna12.jpg" alt="Memory 10">
+        <div class="film-sprocket bottom"></div>
+      </div>
+
+      <div class="film-frame">
+        <div class="film-sprocket top"></div>
+        <img src="images/dhanna13.jpg" alt="Memory 11">
+        <div class="film-sprocket bottom"></div>
+      </div>
+
+      <div class="film-frame">
+        <div class="film-sprocket top"></div>
+        <img src="images/dhanna14.jpg" alt="Memory 12">
+        <div class="film-sprocket bottom"></div>
+      </div>
+
+      <div class="film-frame">
+        <div class="film-sprocket top"></div>
+        <img src="images/dhanna15.jpg" alt="Memory 13">
+        <div class="film-sprocket bottom"></div>
+      </div>
+
+      <div class="film-frame">
+        <div class="film-sprocket top"></div>
+        <img src="images/dhanna16.jpg" alt="Memory 14">
+        <div class="film-sprocket bottom"></div>
+      </div>
+
+   
+
 
     </div>
   </div>
@@ -500,7 +544,7 @@
 
 
   <!-- ============================================================ -->
-  <!-- STEP 5: CAKE CELEBRATION -->
+  <!-- STEP 5: CAKE CELEBRATION (final step) -->
   <!-- ============================================================ -->
   <section
     class="step section cake-celebration-section"
@@ -515,9 +559,7 @@
       &larr; Back
     </button>
 
-    <p class="advance-greeting">
-      Advance Happy Birthday, Kirsten!
-    </p>
+
 
     <p class="you-chose-label">
       You chose&hellip;
@@ -547,7 +589,7 @@
     >
 
       <p class="wish-headline">
-        Advanced Happy Birthday, Kirsten!
+        Advanced Happy 18th Birthday, Dhanna!
       </p>
 
       <p class="wish-sub">
@@ -555,49 +597,6 @@
       </p>
 
     </div>
-
-    <div class="celebration-actions">
-
-      <button
-        class="btn btn-primary continue-btn"
-        data-next
-        type="button"
-      >
-        Continue
-      </button>
-
-    </div>
-
-  </section>
-
-
-  <!-- ============================================================ -->
-  <!-- STEP 6: FINAL MESSAGE -->
-  <!-- ============================================================ -->
-  <section
-    class="step section final-section"
-    data-step="final"
-  >
-
-    <button
-      class="btn btn-secondary back-btn"
-      data-back
-      type="button"
-    >
-      &larr; Back
-    </button>
-
-    <div class="bg-gradient bg-gradient-final"></div>
-
-    <h2 class="final-title">
-      Happy Birthday,<br/>
-      Kirsten Dhanna Octoman
-    </h2>
-
-    <p class="final-message">
-      I hope your day is filled with happiness, love, laughter,
-      and beautiful memories.
-    </p>
 
   </section>
 

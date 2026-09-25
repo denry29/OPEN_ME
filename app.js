@@ -7,6 +7,9 @@
    STEP FLOW
    (the circular progress dots have been removed — steps are now
    tracked purely internally, with no dot indicator in the UI)
+
+   NOTE: 'celebration' (the cake celebration) is now the LAST step —
+   there is no step after it and no Continue button leaving it.
    --------------------------------------------------------------------- */
 
 const StepFlow = (() => {
@@ -16,8 +19,7 @@ const StepFlow = (() => {
     'memories',
     'letter',
     'cakes',
-    'celebration',
-    'final'
+    'celebration'
   ];
 
   let current = 0;
@@ -1821,6 +1823,8 @@ const Music = (() => {
 
 /* ---------------------------------------------------------------------
    MUSIC REMINDER
+   The "Okay" button is visible immediately — no delay before it
+   can be tapped.
    --------------------------------------------------------------------- */
 
 function initMusicReminder() {
@@ -1840,15 +1844,6 @@ function initMusicReminder() {
   if (!reminder || !okBtn) {
     return;
   }
-
-
-  // Show Okay button after 3 seconds
-  setTimeout(() => {
-
-    okBtn.hidden =
-      false;
-
-  }, 3000);
 
 
   // Start music and confetti
