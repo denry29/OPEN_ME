@@ -93,7 +93,7 @@ img { max-width: 100%; display: block; }
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(0, 0, 0, 0.75);
+  background: rgba(182, 161, 161, 0.75);
   backdrop-filter: blur(50px);
   padding: 20px;
 }
@@ -103,7 +103,7 @@ img { max-width: 100%; display: block; }
 .music-reminder-card {
   position: relative; /* anchors .reminder-snoopy to this card, not the viewport */
 
-  background: var(--black);
+  background: #580e22;
   border: 1px solid rgba(255, 107, 129, 0.3);
   border-radius: var(--radius-lg);
   padding: 32px 28px;
