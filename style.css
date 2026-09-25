@@ -611,9 +611,18 @@ img { max-width: 100%; display: block; }
 /* ---- CTA button, sits under the message inside panel 2 ---- */
 
 .open-surprise-btn {
-  margin-top: 400px;
+  margin-top: 300px;
  
 }
+
+@media (max-width: 600px) {
+  .open-surprise-btn {
+    transform: translateY(-80px);
+  }
+
+}
+
+
 
 /* ============================================================ */
 /* PHOTO MEMORIES — polaroid slider                               */
