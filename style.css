@@ -63,16 +63,21 @@ img { max-width: 100%; display: block; }
 .reminder-snoopy {
   position: absolute;
 
-  /* Position above the reminder card */
-  top: 170px;
+  /* Anchored to the card itself (see .music-reminder-card
+     position: relative below), so it always sits pinned to the
+     top edge of the card no matter the card's size or position
+     on screen — desktop and phone alike. */
+  top: -5%;
   left: 50%;
 
-  /* Size */
-  width: 190px;
+  /* Size — scales with the card instead of a fixed px value so it
+     never floats away from the card on narrow screens. */
+  width: clamp(120px, 40vw, 190px);
   height: auto;
 
-  /* Center horizontally */
-  transform: translateX(-50%);
+  /* Pull it up so roughly half of it peeks above the card, and
+     center it horizontally. */
+  transform: translate(-50%, -62%);
 
   /* Put Snoopy above everything */
   z-index: 10;
@@ -96,6 +101,8 @@ img { max-width: 100%; display: block; }
 .music-reminder-overlay[hidden] { display: none; }
 
 .music-reminder-card {
+  position: relative; /* anchors .reminder-snoopy to this card, not the viewport */
+
   background: var(--black);
   border: 1px solid rgba(255, 107, 129, 0.3);
   border-radius: var(--radius-lg);
@@ -109,6 +116,9 @@ img { max-width: 100%; display: block; }
   align-items: center;
   gap: 10px;
   animation: fade-in-up 0.4s ease both;
+
+  /* Room at the top so Snoopy's peeking head doesn't overlap the title */
+  margin-top: 56px;
 }
 
 .music-reminder-title {
@@ -183,6 +193,26 @@ img { max-width: 100%; display: block; }
   justify-content: center;
   text-align: center;
   overflow-y: auto; /* a single tall step can scroll internally without moving the page */
+}
+
+/* Give every OTHER section the exact same soft dotted texture the
+   welcome section uses (.scrapbook-pattern), so every step's
+   background reads as identical. Welcome section keeps its own
+   .scrapbook-bg / .scrapbook-pattern elements, so it's excluded here
+   to avoid doubling the texture. z-index:-1 keeps it behind the
+   section's own content. */
+.section:not(.welcome-section)::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  opacity: 0.22;
+  background-image:
+    radial-gradient(rgba(255, 107, 129, 0.18) 2px, transparent 2.5px),
+    radial-gradient(rgba(255, 107, 129, 0.1) 2px, transparent 2.5px);
+  background-size: 46px 46px, 46px 46px;
+  background-position: 0 0, 23px 23px;
+  pointer-events: none;
 }
 
 .section-title {
@@ -1832,24 +1862,25 @@ img { max-width: 100%; display: block; }
   /* Pin the flowers to the actual screen corners (position: fixed,
      relative to the viewport) instead of the panel, and keep most
      of each image on-screen so they read as corner decoration
-     rather than clipping off the edge of a narrow phone. */
+     rather than clipping off the edge of a narrow phone.
+     Sized bigger than before so they still read clearly on phones. */
   .flower-decoration,
   .flower1-decoration {
     position: fixed;
-    width: 38vw;
-    max-width: 170px;
+    width: 52vw;
+    max-width: 230px;
     z-index: 1;
   }
 
   .flower-decoration {
-    left: -3vw;
+    left: -4vw;
     top: auto;
-    bottom: -3vw;
+    bottom: -4vw;
   }
 
   .flower1-decoration {
-    right: -3vw;
-    top: -3vw;
+    right: -4vw;
+    top: -4vw;
   }
 }
 
@@ -1894,8 +1925,7 @@ img { max-width: 100%; display: block; }
   }
 
   .reminder-snoopy {
-    width: 130px;
-    top: 130px;
+    width: clamp(90px, 32vw, 130px);
   }
 
   .music-reminder-title {
