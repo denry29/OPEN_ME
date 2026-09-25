@@ -1873,14 +1873,14 @@ img { max-width: 100%; display: block; }
   }
 
   .flower-decoration {
-    left: -4vw;
+    left: -10vw;
     top: auto;
-    bottom: -4vw;
+    bottom: -10vw;
   }
 
   .flower1-decoration {
     right: -4vw;
-    top: -4vw;
+    top: -10vw;
   }
 }
 
